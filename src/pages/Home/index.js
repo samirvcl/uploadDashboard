@@ -8,7 +8,9 @@ import {
   Tooltip,
 } from "recharts";
 import { Layout } from "../../layout";
-import { api } from "../../service/api";
+import { getAllClasses } from "../../service/v1/classes-service";
+import { getAllMounthStatistics } from "../../service/v1/mounths-service";
+import { getAllStudents } from "../../service/v1/students-sevice";
 import {
   CardContainer,
   CardItem,
@@ -18,44 +20,43 @@ import {
 } from "./styles";
 
 export function Home() {
-    const [users, setUsers] = useState([]);
-    async function getAllUser() {
-        try {
-            const { data } = await api.get('users');
-            setUsers(data);
-        } catch {
-            console.log("deu erro");
-        }
+  const [students, setStudents] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [graphStudents, setGraphStudents] = useState([]);
+  async function getAllUser() {
+    try {
+      const data = await getAllStudents();
+      setStudents(data);
+    } catch {
+      console.log("deu erro");
     }
+  }
 
-    useEffect(() => {
-        ;(async () => {
-            await getAllUser();
-        })();
-    }, []);
-  const data = [
-    {
-      mounth: "april",
-      access: 400,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      mounth: "march",
-      access: 2000,
-      amt: 1400,
-    },
-    {
-      mounth: "may",
-      access: 1200,
-      amt: 2400,
-    },
-    {
-      mounth: "juny",
-      access: 2000,
-      amt: 1000,
-    },
-  ];
+ 
+  async function getAllClass() {
+    try {
+      const data = await getAllClasses();
+      setClasses(data);
+    } catch {
+      console.log("deu erro");
+    }
+  }
+  async function getMounthStatistics() {
+    try {
+      const data = await getAllMounthStatistics();
+      setGraphStudents(data);
+    } catch {
+      console.log("deu erro");
+    }
+  }
+  useEffect(() => {
+    (async () => {
+      await getAllUser();
+      await getAllClass();
+      await getAllMounthStatistics();
+    })();
+  }, []);
+  
   return (
     <Layout>
       <Container>
@@ -64,17 +65,27 @@ export function Home() {
         <Content>
           <CardContainer>
             <CardItem>
-              <span>Nº Users</span>
-              {users.length}
-              
+              <span>Nº Students</span>
+              {students?.length}
             </CardItem>
             <CardItem>
               <span>Nº Classes</span>
-              14
+              {classes?.length}
             </CardItem>
           </CardContainer>
-          <div style={{ display: "flex", gap:"2.5rem" }}>
+          <div style={{ display: "flex", gap: "2.5rem" }}>
             <GraphicContainer>
+              <h2>Students Registers</h2>
+              <LineChart width={800} height={400} data={graphStudents}>
+                <XAxis dataKey="mounth" />
+                <YAxis />
+                <Tooltip />
+                <CartesianGrid strike="#ccc" />
+                <Line type="monotone" dataKey="count" stroke="#ff7300" />
+                <Line type="monotone" dataKey="amt" stroke="#402d00" />
+              </LineChart>
+            </GraphicContainer>
+            {/* <GraphicContainer>
               <h2>Graph Accaess</h2>
               <LineChart width={500} height={400} data={data}>
                 <XAxis dataKey="mounth" />
@@ -84,18 +95,7 @@ export function Home() {
                 <Line type="monotone" dataKey="access" stroke="#ff7300" />
                 <Line type="monotone" dataKey="amt" stroke="#402d00" />
               </LineChart>
-            </GraphicContainer>
-            <GraphicContainer>
-              <h2>Graph Accaess</h2>
-              <LineChart width={500} height={400} data={data}>
-                <XAxis dataKey="mounth" />
-                <YAxis />
-                <Tooltip />
-                <CartesianGrid strike="#ccc" />
-                <Line type="monotone" dataKey="access" stroke="#ff7300" />
-                <Line type="monotone" dataKey="amt" stroke="#402d00" />
-              </LineChart>
-            </GraphicContainer>
+            </GraphicContainer> */}
           </div>
         </Content>
       </Container>

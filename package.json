@@ -13,8 +13,10 @@
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-hook-form": "^7.34.2",
+    "react-router": "^6.3.0",
     "react-router-dom": "6",
     "react-scripts": "5.0.1",
+    "react-table": "^7.8.0",
     "recharts": "^2.1.13",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
@@ -23,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "serve": "json-server --watch db.json --port 3001"
   },
   "eslintConfig": {
     "extends": [

@@ -47,7 +47,7 @@ export const CardItem = styled.article`
 export const GraphicContainer = styled.div`
     background: #fff;
     border: 2px solid #bdbdbd;
-    width: 50%;
+    width: 100%;
     border-radius: 5px;
     padding: 2rem 1rem;
     box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
